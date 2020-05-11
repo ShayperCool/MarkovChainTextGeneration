@@ -8,7 +8,7 @@ namespace MarkovChainTextGeneration.Models {
 
 		public string GetNextWord(string currentWord) {
 			var currentWordObject = Words.FirstOrDefault(w => w.Text == currentWord);
-			var nextWords = Words.Where(w => currentWordObject.NextWords.Contains(w.Text));
+			var nextWords = Words.Where(w => currentWordObject.NextWords.Contains(w));
 			int max = nextWords.Sum(w => w.Count);
 			int targetIndex = new Random().Next(max);
 			int current = 0;
@@ -24,14 +24,18 @@ namespace MarkovChainTextGeneration.Models {
 			var wordObject = Words.FirstOrDefault(w => w.Text == word);
 			if (wordObject == null) {
 				wordObject = new Word{Text = word};
-				wordObject.NextWords.Add(nextWord);
 				Words.Add(wordObject);
 			}
 			else {
 				wordObject.Count++;
-				if (!wordObject.NextWords.Contains(nextWord)) {
-					wordObject.NextWords.Add(nextWord);
+			}
+			if (wordObject.NextWords.FirstOrDefault(w => w.Text == nextWord) == null) {
+				var nextWordObject = Words.FirstOrDefault(w => w.Text == nextWord);
+				if (nextWordObject == null) {
+					nextWordObject = new Word {Text = nextWord};
+					Words.Add(nextWordObject);
 				}
+				wordObject.NextWords.Add(nextWordObject);
 			}
 		}
 		
