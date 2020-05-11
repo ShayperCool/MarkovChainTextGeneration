@@ -17,7 +17,6 @@ namespace MarkovChainTextGeneration.Models {
 				if (current >= targetIndex)
 					return nextWord.Text;
 			}
-
 			return "";
 		}
 
@@ -34,9 +33,17 @@ namespace MarkovChainTextGeneration.Models {
 					wordObject.NextWords.Add(nextWord);
 				}
 			}
-
 		}
 		
+		public void AddEnd(string end){
+			AddWord(end, TextProcessor.END_CONST);
+			var wordObject = Words.FirstOrDefault(w => w.Text == TextProcessor.END_CONST);
+			if (wordObject == null) {
+				wordObject = new Word {Text = TextProcessor.END_CONST};
+				Words.Add(wordObject);
+			}
+			wordObject.Count++;
+		}
 		
 		
 	}
