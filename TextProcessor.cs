@@ -18,7 +18,7 @@ namespace MarkovChainTextGeneration {
 			_storageController = new StorageController(_storage);
 		}
 		
-		public async void ProcessTextAsync(string text) {
+		public async Task ProcessTextAsync(string text) {
 			text = text.Replace('\n', ' ').Replace('\t', ' ');
 			var words = text.Split(' ');
 			
